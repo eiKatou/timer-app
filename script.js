@@ -7,10 +7,12 @@ class Timer {
         this.resetBtn = document.getElementById('resetBtn');
         this.minutesInput = document.getElementById('minutesInput');
         this.secondsInput = document.getElementById('secondsInput');
+        this.volumeSlider = document.getElementById('volumeSlider');
 
         this.timeLeft = 0;
         this.timerId = null;
         this.audioContext = null;
+        this.volume = 0.3; // デフォルト音量
 
         this.initializeEventListeners();
         this.updateDisplayFromInputs(); // 初期表示を設定
@@ -48,6 +50,11 @@ class Timer {
                 this.secondsInput.value = 0;
                 this.updateDisplayFromInputs();
             });
+        });
+
+        // 音量スライダーのイベントリスナー
+        this.volumeSlider.addEventListener('input', (e) => {
+            this.volume = parseFloat(e.target.value);
         });
     }
 
@@ -140,7 +147,7 @@ class Timer {
             oscillator.frequency.setValueAtTime(note.frequency, currentTime);
 
             gainNode.gain.setValueAtTime(0, currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.3, currentTime + 0.01);
+            gainNode.gain.linearRampToValueAtTime(this.volume, currentTime + 0.01);
             gainNode.gain.linearRampToValueAtTime(0, currentTime + note.duration);
 
             oscillator.start(currentTime);

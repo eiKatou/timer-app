@@ -135,4 +135,44 @@ button:active {
 
 .preset-btn:hover {
     background-color: #d0d0d0;
+}
+
+.volume-control {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-control label {
+    font-size: 14px;
+    color: #666;
+}
+
+#volumeSlider {
+    width: 200px;
+    height: 8px;
+    -webkit-appearance: none;
+    background: #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#volumeSlider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
 } 

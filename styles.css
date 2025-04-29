@@ -154,6 +154,7 @@ button:active {
     width: 200px;
     height: 8px;
     -webkit-appearance: none;
+    appearance: none;
     background: #ddd;
     border-radius: 4px;
     outline: none;

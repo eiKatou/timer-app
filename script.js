@@ -12,7 +12,7 @@ class Timer {
         this.timeLeft = 0;
         this.timerId = null;
         this.audioContext = null;
-        this.volume = 0.3; // デフォルト音量
+        this.volume = parseFloat(this.volumeSlider.value); // スライダーの初期値から設定
 
         this.initializeEventListeners();
         this.updateDisplayFromInputs(); // 初期表示を設定
@@ -55,6 +55,13 @@ class Timer {
         // 音量スライダーのイベントリスナー
         this.volumeSlider.addEventListener('input', (e) => {
             this.volume = parseFloat(e.target.value);
+            // 現在再生中の音がある場合は、音量を即座に反映
+            if (this.audioContext && this.audioContext.state === 'running') {
+                const gainNodes = this.audioContext.destination.context.getElementsByTagName('gain');
+                gainNodes.forEach(node => {
+                    node.gain.value = this.volume;
+                });
+            }
         });
     }
 
@@ -125,6 +132,9 @@ class Timer {
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         }
 
+        // 現在の音量を取得
+        const currentVolume = this.volume;
+
         const notes = [
             { frequency: 440, duration: 0.2 }, // A4
             { frequency: 523.25, duration: 0.2 }, // C5
@@ -147,7 +157,7 @@ class Timer {
             oscillator.frequency.setValueAtTime(note.frequency, currentTime);
 
             gainNode.gain.setValueAtTime(0, currentTime);
-            gainNode.gain.linearRampToValueAtTime(this.volume, currentTime + 0.01);
+            gainNode.gain.linearRampToValueAtTime(currentVolume, currentTime + 0.01);
             gainNode.gain.linearRampToValueAtTime(0, currentTime + note.duration);
 
             oscillator.start(currentTime);
